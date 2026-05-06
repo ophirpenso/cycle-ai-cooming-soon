@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Cycle — The AI Native Service Firm</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/png" href="assets/cycle-icon-ink.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --pink: #FBE4DA;
+    --pink-deep: #F5D2C2;
+    --ink: #0A0A0A;
+    --off: #FAF7F4;
+    --muted: rgba(10, 10, 10, 0.55);
+    --rule: rgba(10, 10, 10, 0.14);
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--pink);
+    color: var(--ink);
+    font-family: var(--font);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .page {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: clamp(24px, 3.5vw, 48px) clamp(24px, 5vw, 88px);
+    gap: clamp(40px, 6vh, 80px);
+  }
+
+  /* ============ Top bar ============ */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .topbar .brand {
+    display: flex; align-items: center; gap: 12px;
+    color: var(--ink);
+    letter-spacing: 0.18em;
+    font-weight: 500;
+  }
+  .topbar .brand img { height: 28px; width: 28px; display: block; }
+  .topbar .brand span { font-size: 14px; }
+  .topbar .meta {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .dot-live {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--ink);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.7); }
+  }
+
+  /* ============ Hero ============ */
+  .hero {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: center;
+    max-width: 1600px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 36px;
+  }
+  .eyebrow::before {
+    content: ""; display: block;
+    width: 36px; height: 1px; background: var(--ink); opacity: 0.6;
+  }
+
+  h1.headline {
+    font-family: var(--font);
+    font-weight: 500;
+    font-size: clamp(56px, 8.4vw, 148px);
+    line-height: 0.94;
+    letter-spacing: -0.045em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  h1.headline .line { display: block; }
+  h1.headline .accent {
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  .sub {
+    margin-top: clamp(28px, 3.6vh, 44px);
+    font-family: var(--mono);
+    font-size: clamp(14px, 1.05vw, 17px);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 22px;
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+  }
+  .sub .ticker {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--ink);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  .lede {
+    margin-top: clamp(24px, 3vh, 36px);
+    max-width: 540px;
+    font-size: clamp(16px, 1.18vw, 19px);
+    line-height: 1.55;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  /* ============ Stage / animation ============ */
+  .stage {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    max-width: 720px;
+    justify-self: end;
+    isolation: isolate;
+  }
+
+  .stage svg {
+    width: 100%; height: 100%;
+    display: block;
+    overflow: visible;
+  }
+
+  /* Soft pink halo behind the mark */
+  .halo {
+    position: absolute; inset: 6%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%,
+      rgba(245, 210, 194, 0.55) 0%,
+      rgba(245, 210, 194, 0.18) 45%,
+      transparent 70%);
+    z-index: -1;
+    animation: breathe 7s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.06); opacity: 1; }
+  }
+
+  /* Concentric rings */
+  .ring {
+    fill: none;
+    stroke: var(--ink);
+    stroke-opacity: 0.14;
+    stroke-width: 1;
+  }
+  .ring.solid { stroke-opacity: 0.35; }
+
+  /* The mark */
+  .mark { fill: var(--ink); }
+
+  /* Orbit dot — animates along path */
+  .orbit-dot {
+    fill: var(--ink);
+    offset-rotate: 0deg;
+    animation: orbit 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+  .orbit-dot.d2 { animation-duration: 13s; animation-direction: reverse; opacity: 0.7; }
+  .orbit-dot.d3 { animation-duration: 17s; opacity: 0.45; }
+
+  @keyframes orbit {
+    0%   { offset-distance: 0%; }
+    100% { offset-distance: 100%; }
+  }
+
+  /* tick marks around outer ring */
+  .tick { stroke: var(--ink); stroke-opacity: 0.25; stroke-width: 1; }
+
+  /* coordinate labels around stage */
+  .coord {
+    position: absolute;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .coord.tl { top: 0; left: 0; }
+  .coord.tr { top: 0; right: 0; }
+  .coord.bl { bottom: 0; left: 0; }
+  .coord.br { bottom: 0; right: 0; }
+
+  /* ============ Footer ============ */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+  }
+  .footer a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+  .footer a:hover { border-bottom-color: var(--ink); }
+  .footer .col { display: flex; flex-direction: column; gap: 6px; }
+  .footer .label { color: var(--muted); }
+
+  /* ============ Email capture ============ */
+  .capture {
+    margin-top: 28px;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    max-width: 460px;
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(6px);
+  }
+  .capture input {
+    flex: 1;
+    border: 0;
+    background: transparent;
+    padding: 14px 22px;
+    font-family: var(--font);
+    font-size: 15px;
+    color: var(--ink);
+    outline: none;
+  }
+  .capture input::placeholder {
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .capture button {
+    border: 0;
+    background: var(--ink);
+    color: var(--off);
+    padding: 0 28px;
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .capture button:hover { background: #1f1f1f; }
+  .capture button:disabled { opacity: 0.6; cursor: default; }
+  .capture-msg {
+    margin-top: 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    min-height: 16px;
+  }
+
+  /* ============ Responsive ============ */
+  @media (max-width: 980px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .stage { max-width: 460px; justify-self: center; order: 2; }
+    h1.headline { font-size: clamp(48px, 12vw, 88px); }
+    .footer { font-size: 11px; }
+    .topbar .meta { display: none; }
+  }
+  @media (max-width: 540px) {
+    .page { padding: 24px 22px; }
+    .eyebrow::before { width: 22px; }
+    .capture { max-width: 100%; }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .orbit-dot, .halo, .dot-live, .sub .ticker { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ============ Top bar ============ -->
+  <header class="topbar">
+    <div class="brand">
+      <img src="assets/cycle-icon-on-transparent.png" alt="Cycle" />
+      <span>Cycle</span>
+    </div>
+    <div class="meta">
+      <span class="dot-live" aria-hidden="true"></span>
+      <span>Status · Building</span>
+    </div>
+  </header>
+
+  <!-- ============ Hero ============ -->
+  <section class="hero">
+
+    <div class="copy">
+      <div class="eyebrow">Cycle&nbsp;·&nbsp;Est. 2026</div>
+
+      <h1 class="headline">
+        <span class="line">The <span class="accent">AI&nbsp;native</span></span>
+        <span class="line">service firm.</span>
+      </h1>
+
+      <div class="sub">
+        <span class="ticker" aria-hidden="true"></span>
+        Coming soon
+      </div>
+
+      <p class="lede">
+        Financial services, delivered at the speed of the business itself.
+        Fast, accurate, and real-time, the way it always should have been.
+      </p>
+
+      <form class="capture" id="capture" novalidate>
+        <input type="email" id="email" placeholder="your@email.com" autocomplete="email" required aria-label="Email address" />
+        <button type="submit" id="submit">Notify me</button>
+      </form>
+      <div class="capture-msg" id="msg" aria-live="polite"></div>
+    </div>
+
+    <!-- ============ Stage (animation) ============ -->
+    <div class="stage" aria-hidden="true">
+      <div class="halo"></div>
+      <div class="coord tl">N · 32.0853</div>
+      <div class="coord tr">— 001</div>
+      <div class="coord bl">cycle / mark</div>
+      <div class="coord br">v0.1</div>
+
+      <svg viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- The orbital paths the dot traces -->
+          <path id="orbitA" d="M 70,0 A 70,70 0 1,1 -70,0 A 70,70 0 1,1 70,0" />
+          <path id="orbitB" d="M 54,0 A 54,54 0 1,1 -54,0 A 54,54 0 1,1 54,0" />
+          <path id="orbitC" d="M 86,0 A 86,86 0 1,1 -86,0 A 86,86 0 1,1 86,0" />
+        </defs>
+
+        <!-- Concentric rings -->
+        <circle class="ring solid" cx="0" cy="0" r="92" />
+        <circle class="ring" cx="0" cy="0" r="78" />
+        <circle class="ring" cx="0" cy="0" r="62" />
+        <circle class="ring" cx="0" cy="0" r="46" />
+
+        <!-- Tick marks at cardinal points -->
+        <g class="ticks">
+          <line class="tick" x1="0" y1="-94" x2="0" y2="-88" />
+          <line class="tick" x1="0" y1="94"  x2="0" y2="88" />
+          <line class="tick" x1="-94" y1="0" x2="-88" y2="0" />
+          <line class="tick" x1="94" y1="0"  x2="88" y2="0" />
+          <line class="tick" x1="66" y1="-66" x2="62" y2="-62" />
+          <line class="tick" x1="-66" y1="66" x2="-62" y2="62" />
+          <line class="tick" x1="-66" y1="-66" x2="-62" y2="-62" />
+          <line class="tick" x1="66" y1="66" x2="62" y2="62" />
+        </g>
+
+        <!-- The Cycle mark, scaled so its rounded square fits inside the ~46r ring.
+             The icon: a rounded square missing a bottom-right notch + a circular "dot".
+             Below is reconstructed from the icon vector. -->
+        <g class="mark" transform="translate(-38, -38)">
+          <!-- Rounded body, missing bottom-right quadrant -->
+          <path d="
+            M 18,0
+            H 58
+            A 18,18 0 0 1 76,18
+            V 58
+            H 38
+            V 76
+            H 18
+            A 18,18 0 0 1 0,58
+            V 18
+            A 18,18 0 0 1 18,0
+            Z" />
+          <!-- The detached dot (sits in the bottom-right notch) -->
+          <circle class="static-dot" cx="59" cy="59" r="11" />
+        </g>
+
+        <!-- Orbiting particles — they trace the rings -->
+      </svg>
+
+      <!-- The orbit dots are HTML elements positioned absolutely over the SVG,
+           using CSS offset-path to follow the same circles -->
+      <div class="orbit-layer" style="position:absolute; inset:0; pointer-events:none;">
+        <svg viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute; inset:0; width:100%; height:100%; overflow:visible;">
+          <!-- dot 1 -->
+          <circle r="3.2" class="orbit-dot" style="offset-path: path('M 70,0 A 70,70 0 1,1 -70,0 A 70,70 0 1,1 70,0');" />
+          <!-- dot 2 -->
+          <circle r="2" class="orbit-dot d2" style="offset-path: path('M 54,0 A 54,54 0 1,1 -54,0 A 54,54 0 1,1 54,0');" />
+          <!-- dot 3 -->
+          <circle r="1.6" class="orbit-dot d3" style="offset-path: path('M 86,0 A 86,86 0 1,1 -86,0 A 86,86 0 1,1 86,0');" />
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Footer ============ -->
+  <footer class="footer">
+    <div class="col">
+      <span class="label">Contact</span>
+      <a href="mailto:hello@cycle.com">hello@cycle.com</a>
+    </div>
+    <div class="col">
+      <span class="label">Location</span>
+      <span style="color: var(--ink);">Tel Aviv · London · New York</span>
+    </div>
+    <div class="col" style="text-align:right;">
+      <span class="label">© 2026</span>
+      <span style="color: var(--ink);">Cycle Labs</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // Email capture (visual only — no backend)
+  const form = document.getElementById('capture');
+  const email = document.getElementById('email');
+  const submit = document.getElementById('submit');
+  const msg = document.getElementById('msg');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const v = (email.value || '').trim();
+    if (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+      msg.textContent = 'Please enter a valid email.';
+      msg.style.color = 'var(--ink)';
+      return;
+    }
+    submit.disabled = true;
+    submit.textContent = 'Saved';
+    msg.textContent = 'Thanks — we will be in touch.';
+    msg.style.color = 'var(--muted)';
+    email.value = '';
+    setTimeout(() => {
+      submit.disabled = false;
+      submit.textContent = 'Notify me';
+    }, 3000);
+  });
+</script>
+
+</body>
+</html>
